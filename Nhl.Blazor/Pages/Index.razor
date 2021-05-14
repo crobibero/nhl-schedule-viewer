@@ -1,0 +1,132 @@
+﻿@page "/"
+@using Nhl.Blazor.Services
+@using Nhl.Blazor.Models
+
+<Container Fluid="true">
+    <div class="columns is-desktop is-mobile is-centered is-vcentered">
+        <div class="column is-2">
+            <Button Color="Color.Dark" Clicked="() => OnDateChanged(_selectedDate.AddDays(-1))" class="is-fullwidth">&larr;</Button>
+        </div>
+        <div class="column is-8">
+            <DateEdit TValue="DateTime" Date="@_selectedDate" DateChanged="OnDateChanged" Class="center"/>
+        </div>
+        <div class="column is-2">
+            <Button Color="Color.Dark" Clicked="() => OnDateChanged(_selectedDate.AddDays(1))" class="is-fullwidth">&rarr;</Button>        
+        </div>
+    </div>
+    
+    @if (_isLoading)
+    {
+        <Wave Center="true"/>
+    }
+    else if (_games.Count > 0)
+    {
+        <Table Striped="true">
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>
+                        <div class="column is-desktop is-mobile is-centered is-vcentered">
+                            Status
+                        </div>
+                    </TableHeaderCell>
+                    <TableHeaderCell>
+                        <div class="column is-desktop is-mobile is-centered is-vcentered">
+                            Time
+                        </div>
+                    </TableHeaderCell>
+                    <TableHeaderCell ColumnSpan="2">
+                        <div class="column is-desktop is-mobile is-centered is-vcentered">
+                            Away
+                        </div>
+                    </TableHeaderCell>
+                    <TableHeaderCell ColumnSpan="2">
+                        <div class="column is-desktop is-mobile is-centered is-vcentered">
+                            Home
+                        </div>
+                    </TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                @foreach (var game in _games)
+                {
+                    <TableRow>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.Status?.DetailedState
+                            </div>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.GameDate?.ToLocalTime().ToString("hh:mm tt")
+                            </div>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.Teams?.Away?.Team?.Name
+                            </div>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.Teams?.Away?.Score
+                            </div>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.Teams?.Home?.Team?.Name
+                            </div>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <div class="column is-desktop is-mobile is-centered is-vcentered">
+                                @game.Teams?.Home?.Score
+                            </div>
+                        </TableRowCell>
+                    </TableRow>
+                }
+            </TableBody>
+        </Table>
+    }
+    else
+    {
+        <div class="columns is-mobile is-centered is-vcentered">
+            No results.
+        </div>
+    }
+</Container>
+
+@code
+{
+    [Inject]
+    IStatsApiService? StatsApiService { get; set; }
+
+    private IReadOnlyList<Game> _games = Array.Empty<Game>();
+    private DateTime _selectedDate;
+    private bool _isLoading = true;
+
+    /// <inheritdoc />
+    protected override Task OnInitializedAsync()
+    {
+        OnDateChanged(DateTime.Now);
+        return base.OnInitializedAsync();
+    }
+
+    private async void OnDateChanged(DateTime newDate)
+    {
+        try
+        {
+            _games = Array.Empty<Game>();
+            _isLoading = true;
+            _selectedDate = newDate;
+            StateHasChanged();
+            if (StatsApiService is not null)
+            {
+                _games = await StatsApiService.GetGamesAsync(newDate)
+                    .ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+}
