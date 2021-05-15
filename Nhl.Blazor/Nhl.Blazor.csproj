@@ -9,7 +9,13 @@
         <Nullable>enable</Nullable>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <CodeAnalysisRuleSet>../blazor.ruleset</CodeAnalysisRuleSet>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
+
 
     <ItemGroup>
         <PackageReference Include="Blazorise.Bulma" Version="0.9.3.6" />
