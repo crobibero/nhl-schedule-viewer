@@ -20,12 +20,6 @@ namespace Nhl.Blazor.Models
         public string? Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the team abbreviation.
-        /// </summary>
-        [JsonPropertyName("abbreviation")]
-        public string? Abbreviation { get; set; }
-
-        /// <summary>
         /// Gets the team image.
         /// </summary>
         [JsonIgnore]

@@ -28,7 +28,7 @@ namespace Nhl.Blazor
                 .AddBlazorise()
                 .AddBulmaProviders();
 
-            builder.Services.AddScoped(sp => new HttpClient
+            builder.Services.AddScoped(_ => new HttpClient
             {
                 BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
             });
