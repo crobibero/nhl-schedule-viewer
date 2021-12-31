@@ -1,16 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Nhl.Blazor.Models
+namespace Nhl.Blazor.Models;
+
+/// <summary>
+/// Status container.
+/// </summary>
+public class Status
 {
     /// <summary>
-    /// Status container.
+    /// Gets or sets the detailed state.
     /// </summary>
-    public class Status
-    {
-        /// <summary>
-        /// Gets or sets the detailed state.
-        /// </summary>
-        [JsonPropertyName("detailedState")]
-        public string? DetailedState { get; set; }
-    }
+    [JsonPropertyName("detailedState")]
+    public string? DetailedState { get; set; }
 }

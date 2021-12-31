@@ -1,29 +1,27 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Nhl.Blazor.Models
+namespace Nhl.Blazor.Models;
+
+/// <summary>
+/// Game container.
+/// </summary>
+public class Game
 {
     /// <summary>
-    /// Game container.
+    /// Gets or sets the game date.
     /// </summary>
-    public class Game
-    {
-        /// <summary>
-        /// Gets or sets the game date.
-        /// </summary>
-        [JsonPropertyName("gameDate")]
-        public DateTime? GameDate { get; set; }
+    [JsonPropertyName("gameDate")]
+    public DateTime? GameDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the teams.
-        /// </summary>
-        [JsonPropertyName("teams")]
-        public GameTeams? Teams { get; set; }
+    /// <summary>
+    /// Gets or sets the teams.
+    /// </summary>
+    [JsonPropertyName("teams")]
+    public GameTeams? Teams { get; set; }
 
-        /// <summary>
-        /// Gets or sets the status.
-        /// </summary>
-        [JsonPropertyName("status")]
-        public Status? Status { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the status.
+    /// </summary>
+    [JsonPropertyName("status")]
+    public Status? Status { get; set; }
 }
