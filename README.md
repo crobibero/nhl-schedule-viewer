@@ -1,3 +1,3 @@
-﻿Simple NHL schedule viewer.
+﻿Simple NHL schedule viewer.,
 
 Deployed to https://nhl.codyrobibero.dev via Cloudflare Pages
